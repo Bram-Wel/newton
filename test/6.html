@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tick Percentage</title>
+    <style>
+        /* Add your custom CSS styling here */
+    </style>
+</head>
+<body>
+    <h1>Tick Percentage</h1>
+    
+    <label for="market-select">Select a currency market:</label>
+    <select id="market-select">
+        <option value="EURUSD">EUR/USD</option>
+        <option value="GBPUSD">GBP/USD</option>
+        <option value="USDJPY">USD/JPY</option>
+        <!-- Add more currency options as needed -->
+    </select>
+    
+    <div id="result-container"></div>
+    
+    <script>
+        // Function to make an AJAX request to the backend API and update the UI with the results
+        function fetchTickPercentage(market) {
+            // Make an AJAX GET request to the backend API endpoint
+            fetch('backend.php?market=' + encodeURIComponent(market))
+                .then(response => response.json())
+                .then(data => {
+                    // Update the UI with the percentage values
+                    document.getElementById('result-container').innerHTML = `
+                        <h2>Market: ${data.market}</h2>
+                        <h3>Percentage of even and odd ticks:</h3>
+                        <ul>
+                            <li>5000 Ticks: Even ${data.percentage5000.even}%, Odd ${data.percentage5000.odd}%</li>
+                            <li>120 Ticks: Even ${data.percentage120.even}%, Odd ${data.percentage120.odd}%</li>
+                            <li>20 Ticks: Even ${data.percentage20.even}%, Odd ${data.percentage20.odd}%</li>
+                        </ul>
+                    `;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+        
+        // Event listener for the market select dropdown
+        document.getElementById('market-select').addEventListener('change', function() {
+            // Fetch the tick percentage data when the market selection changes
+            var market = this.value;
+            fetchTickPercentage(market);
+        });
+        
+        // Fetch the initial tick percentage data for the default market
+        var defaultMarket = document.getElementById('market-select').value;
+        fetchTickPercentage(defaultMarket);
+    </script>
+</body>
+</html>

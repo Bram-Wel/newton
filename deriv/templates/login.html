@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Login Page {% endblock %}
+{% block content %}
+<body class="text-center">
+  <div class="container">
+    <form method="POST" class="form-signin" style="color: white;">
+      {{ form.hidden_tag() }}
+      <img class="mb-4" src="https://i.imgur.com/MI3hy5S.png">
+      <h1 class="h3 mb-3 font-weight-normal">
+        Access Token
+      </h1>
+      <br>
+      {{ form.token.label() }}
+      {{ form.token(class="form-control", placeholder="Token") }}
+
+      <br>
+
+
+
+      <div class="checkbox mb-3">
+        <h6>Don't have an account?</h6>
+        <a class="btn btn-sm btn-secondary" href="{{ url_for('register') }}">Register</a>
+      </div>
+
+      {{ form.submit(class="btn btn-lg btn-block btn-primary") }}
+
+    </form>
+  </div>
+  {{ authorise }}
+</body>
+<style>
+  /* Resize image*/ 
+  img {
+    max-width: 25%;
+    max-height: 25%;
+  }
+  .container {
+    max-width: 50%;
+    max-height: 50%;
+  }
+</style>
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block title %}Even/Odd Percentage{% endblock %}
+{% block content %}
+{% include "includes/market_closed_modal.html" %}
+  <div class="row" style="margin-top: 20px; margin-left: 20px">
+    <div class="col-8">
+      <h3>Percentages</h3>
+      <p style="color: grey; font-weight: 600">A comparative display for the sum of even &amp; Odd digits.</p>
+      <div class="form-row">
+      <select id="derivatives" class="custom-select col-7 mb-2 mr-sm-2">
+        <!--<option selected>Open this select menu</option>-->
+        {% for group in symbols|groupby('submarket_display_name') %}
+        <optgroup class="font-weight-bolder" label={{ group.grouper }}>
+          {% for symbol in group.list %}
+          {% if symbol.display_name is eq("Volatility 10 Index") %}
+          <option value={{ symbol['symbol'] }} selected>{{ symbol['display_name'] }}</option>
+          {% else %}
+          <option value={{ symbol['symbol'] }}>{{ symbol['display_name'] }}</option>
+          {% endif %}     
+          {% endfor %}
+        </optgroup>
+        {% endfor %}
+      </select>
+      <br>
+      <div class="input-group col mb-2 mr-sm-2">
+        <div class="input-group-prepend">
+          <div class="input-group-text">Number of Ticks</div>
+        </div>
+        <input type="number" value=100 min=1 max=5000 class="form-control" id="tick_count"/>
+      </div>
+      </div>
+      <script src="/static/deriv.js" type="module"></script>
+      <p id="even" style="color: blue" class"font-weight-bolder">Even: </p>
+      <p id="odd" style="color: brown" class="font-weight-bolder">Odd: </p>
+      <script src='https://cdn.plot.ly/plotly-2.24.1.min.js'></script>
+      <div id="graph"></div>
+      <!--<table class="table table-hover table-dark" style="border-radius: 10px">
+        <thead>
+          <tr>
+            <th scope="col">display_name</th>
+            <th scope="col">exchange_name</th>
+            <th scope="col">submarket_display_name</th>
+            <th scope="col">symbol</th>
+          </tr>
+        </thead>
+        <tbody>
+          {# if  symbols%}
+          {% for symbol in symbols %}
+          <tr>
+            <td>{{ symbol['display_name'] }}</td>
+            <td>{{ symbol['exchange_name'] }}</td>
+            <td>
+              <button class="btn btn-outline btn-info">{{ symbol['submarket_display_name'] }}</button>
+            </td>
+            <td>
+              <button class="btn btn-outline btn-success">{{ symbol['symbol'] }}</button>
+            </td>
+          </tr>
+          {% endfor %}
+          {% endif #}
+        </tbody>
+      </table>-->
+    </div>
+    <div class="col-4">
+      <h6 style="text-align: end; margin-right: 30px">Stake</h6>
+      <br>
+      <div class="row">
+        {% for i in range(2) %}
+        <div class="col-md-6">
+          <div style="margin-bottom: 5px" class="card text-center bg-dark">
+            <div class="card-body">
+              <h5 class="card-title">Title</h5>
+              {% if loop.index0 == 0 %}
+              <button type="button" class="btn btn-outline-danger" style="margin-bottom: 5px"
+                      data-toggle="modal" data-target="#Sell"><strong>Odd Digit</strong>
+              </button>             
+              {% else %}
+              <button type="button" class="btn btn-outline-success" style="margin-bottom: 5px"
+                      data-toggle="modal" data-target="#Sell"><strong>Even Digit</strong>
+              </button>
+              {% endif %}
+              <p class="card-text"><!--<strong-->
+                Stake: $1|Payout: $1.89|89.0%
+              <!--/strong--></p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
